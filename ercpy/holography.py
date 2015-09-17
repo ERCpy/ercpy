@@ -16,7 +16,7 @@ import utils # might have to be comented if utils imported centrally with ercPy
 # from matplotlib.patches import Rectangle
 # import hyperspy as hs
 
-def reconstruct(holo_data,ref_data):
+def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kwargs):
     '''Reconstruct holography data
 
     Parameters
@@ -25,7 +25,11 @@ def reconstruct(holo_data,ref_data):
         The object hologram array.
     ref_data : array_like
         The refernce hologram array.
-
+    rec_param : tuple
+        Reconstruction parameters in sequence (SBrect(x0, y0, x1, y1), SB size)
+    show_phase : boolean
+        set True to plot phase after the reconstruction        
+        
     Returns
     -------
     wave : ndarray
@@ -34,58 +38,74 @@ def reconstruct(holo_data,ref_data):
         Wrapped electron phase
     amp : ndarray
         Amplitude of the wave
+    rec_param : tuple
+        see the description in Parameters
 
     Notes
     -----
-    The reconstruction parameters assigned interactively.
+    The reconstruction parameters assigned interactively if rec_param is not givven
     
     See Also
     --------
     reconstruct_holo
 
     '''
-    # TODO: add reconstruction with givven parameters
-    # TODO: add posibility to reconstruct single holo
     
     (sx,sy)=holo_data.size
     eh_hw_fft = fftshift(fft2(holo_data))
-    f, ax = plt.subplots(1, 1)
-    ax.imshow(np.log(np.absolute(eh_hw_fft)), cmap=cm.binary_r) # Magnification might be added;
+    if rec_param is None:
+        f, ax = plt.subplots(1, 1)
+        ax.imshow(np.log(np.absolute(eh_hw_fft)), cmap=cm.binary_r) # Magnification might be added;
     
     # getting rectangular ROI
-    rect = utils.RoiRect()
-    f.canvas.manager.window.raise_()
-    plt.waitforbuttonpress(5)
-    plt.waitforbuttonpress(5)
-    arect=eh_hw_fft[rect.y0:rect.y1, rect.x0:rect.x1] #<----- use this one in the case of usage of rect_roi obj
+        rect = utils.RoiRect()
+        f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(5)
+        plt.waitforbuttonpress(5)
+        arect=eh_hw_fft[rect.y0:rect.y1, rect.x0:rect.x1] #<----- use this one in the case of usage of rect_roi obj
+        # Sideband position,find the max number and its [c,r]
+        yR,xC = np.unravel_index(arect.argmax(), arect.shape) #center of the selected sideBand
+        sb_pos=[np.round(rect.y0)+yR, np.round(rect.x0)+xC] #<----- use this one in the case of usage of rect_roi obj
+            # Sideband position,find the max number and its [c,r]
+        yR,xC = np.unravel_index(arect.argmax(), arect.shape) #center of the selected sideBand
+        sb_pos=[np.round(rect.y0)+yR, np.round(rect.x0)+xC] #<----- use this one in the case of usage of rect_roi obj
+        a = 1.0
+        sb_size=np.round(np.array([a/3, a/2, a])*(norm(np.subtract(sb_pos,[sx/2, sy/2]))*np.sqrt(2)))
+        sb_size=sb_size-np.mod(sb_size,2) # to be sure of even number, still questionable if it is needed
+        print "Sideband range in pixels"
+        print "%d %d %d" % (sb_size[0], sb_size[1], sb_size[2])    
+        # Choose SideBand size
+        sb_size=input("Choose Sideband size  pixel = ")
+        sb_size=sb_size-np.mod(sb_size,2) # to be sure of even number...
+        print "Sideband Size in pixels"
+        print "%d" % sb_size
+        plt.close(f)
+        rec_param = (rect.x0, rect.y0, rect.x1, rect.y1, sb_size)
+    else:
+        arect = eh_hw_fft[rec_param[1]:rec_param[3], rec_param[0]:rec_param[2]]
+        # Sideband position,find the max number and its [c,r]
+        yR,xC = np.unravel_index(arect.argmax(), arect.shape) #center of the selected sideBand
+        sb_pos = [np.round(rec_param[1])+yR, np.round(rec_param[0])+xC] #<----- use this one in the case of usage of rect_roi obj
+        sb_size = rec_param[4]
 
-    # Sideband position,find the max number and its [c,r]
-    yR,xC = np.unravel_index(arect.argmax(), arect.shape) #center of the selected sideBand
-    sb_pos=[np.round(rect.y0)+yR, np.round(rect.x0)+xC] #<----- use this one in the case of usage of rect_roi obj
-#    sb_pos=[np.round(y0)+yR, np.round(x0)+xC]
-    a = 1.0
-    sb_size=np.round(np.array([a/3, a/2, a])*(norm(np.subtract(sb_pos,[sx/2, sy/2]))*np.sqrt(2)))
-    sb_size=sb_size-np.mod(sb_size,2) # to be sure of even number, still questionable if it is needed
-    print "Sideband range in pixels"
-    print "%d %d %d" % (sb_size[0], sb_size[1], sb_size[2])
-    
-    # Choose SideBand size
-    sb_size=input("Choose Sideband size  pixel = ")
-    sb_size=sb_size-np.mod(sb_size,2) # to be sure of even number...
-    print "Sideband Size in pixels"
-    print "%d" % sb_size
-
-    plt.close(f)
-
-    # Reconstruction        
-    w_ref = reconstruct_holo(ref_data,sb_size,sb_pos,[],[]) #reference electron wave
+    # Reconstruction
+    if ref_data is None:
+        w_ref = 1
+    else:
+        w_ref = reconstruct_holo(ref_data,sb_size,sb_pos,[],[]) #reference electron wave
+        
     w_obj = reconstruct_holo(holo_data,sb_size,sb_pos,[],[]) #object wave
     
     wave = w_obj/w_ref
     phase = np.angle(wave)
     amp = np.absolute(wave)
     
-    return (wave, phase, amp)
+    if show_phase:
+        f, ax = plt.subplots(1, 1)
+        ax.imshow(phase, cmap=cm.binary_r)
+        f.canvas.manager.window.raise_()
+    
+    return (wave, phase, amp, rec_param)
     
     
     
