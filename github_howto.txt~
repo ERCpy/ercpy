@@ -11,11 +11,8 @@ git config --global user.email "martial.duchamp@gmail.com"
 #To get the repositeries locally on your machine (has to be done only the 1st time)
 git clone https://github.com/ERCpy/ercpy
 
-#To update your local directory from your own on-line repository
-git pull https://github.com/MartialD/ercpy master
-
-#If you which to update your local directory from the ERCpy master
-git pull origin master
+#To update your local directory
+pit pull
 
 #Send new files from your local directory to the on-line ERCpy repository
 git add .
