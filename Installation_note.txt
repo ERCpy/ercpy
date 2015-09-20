@@ -4,7 +4,7 @@ Instal Python2.7
 2/ Installation of Hyperspy itself
 sudo pip install hyperspy or easy_install hyperspy
 
-3/ You may have to install the following package, we have to test on different machine what is realy needed
+3/ You may have to install the following packages, we have to test on different machines what is realy needed
 sudo apt-get install python-numpy python-matplotlib ipython ipython-notebook python-traits python-traitsui python-h5py python-scikits-learn python-nose python-statsmodels
 
 sudo apt-get install build-essential python-dev python-setuptools python-numpy python-scipy libatlas-dev libatlas3gf-base
