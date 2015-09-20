@@ -1,5 +1,10 @@
-#Github commands:
+1st, create an account on github.com
 
+In the following commands:
+remplace your own user.name instead of MartialD
+remplace your own user.email instead of martial.duchamp@gmail.com
+
+#Github commands:
 git config --global user.name "MartialD"
 git config --global user.email "martial.duchamp@gmail.com"
 
@@ -11,6 +16,13 @@ pit pull
 
 #Send new files from your local directory to the on-line ERCpy repository
 git add .
+#####################
+'git add --ignore-removal <pathspec>', which is the current default,
+  ignores paths you removed from your working tree.
+
+'git add --all <pathspec>' will let you also record the removals.
+#####################
+
 # Adds the files in the local repository and stages them for commit. To unstage a file, use 'git reset HEAD YOUR-FILE'.
 git commit -m 'First commit'
 
