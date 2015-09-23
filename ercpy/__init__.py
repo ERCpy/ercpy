@@ -2,7 +2,7 @@
 # Copyright 2014 by Forschungszentrum Juelich GmbH
 # Author: J. Caron
 #
-"""# TODO: Global description!
+"""# TODO: Global description (one line)!
 
 Modules
 -------
@@ -16,6 +16,7 @@ utils
     # TODO: Add description!
 
 """
+
 
 from .emd import *  # analysis:ignore
 import holography
