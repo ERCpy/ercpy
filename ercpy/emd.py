@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Sep 11 20:58:25 2015
-
-@author: Jan
-"""
+# Copyright 2015 by Forschungszentrum Juelich GmbH
+# Author: J. Caron
+#
+"""This module provides the :class:`~.EMD` class for storing of electron microscopy datasets."""
 
 
 import re
@@ -18,6 +17,30 @@ __all__ = ['EMD']
 
 
 class EMD(object):
+
+    '''Class for storing electron microscopy datasets.
+
+    The :class:`~.EMD` class can hold an arbitrary amount of datasets in the `data` dictionary.
+    These sets are saved as HyperSpy :class:`~hyperspy.signal.Signal` instances. Global metadata
+    are saved in four dictionaries (`user`, `microscope`, `sample`, `comments`). To print
+    relevant information about the EMD instance use the :func:`~.print_info` function. EMD
+    instances can be loaded from and saved to emd-files, an hdf5 standard developed at Lawrence
+    Berkeley National Lab (http://emdatasets.lbl.gov/).
+
+    Attributes
+    ----------
+    data: dictionary
+        Dictionary which contains all datasets as :class:`~hyperspy.signal.Signal` instances.
+    user: dictionary
+        Dictionary which contains user related metadata.
+    microscope: dictionary
+        Dictionary which contains microscope related metadata.
+    sample: dictionary
+        Dictionary which contains sample related metadata.
+    comments: dictionary
+        Dictionary which contains additional commentary metadata.
+
+    '''
 
     _log = logging.getLogger(__name__)
 
@@ -89,8 +112,8 @@ class EMD(object):
             try:
                 signal.axes_manager[i].scale = dim[1] - dim[0]  # TODO: What about longer dim?
                 signal.axes_manager[i].offset = dim[0]
-            except Exception:
-                print 'Scale could not be calculated!'  # TODO: This happens for strings in dim!
+            except Exception:  # Hyperspy just uses defaults!
+                print 'Scale could not be calculated!'  # TODO: If dim is empty or non-numeric!
         # Extract metadata:
         metadata = {}
         for key, value in group.attrs.iteritems():
@@ -99,7 +122,27 @@ class EMD(object):
         self.add_signal(name, signal, metadata)
 
     def add_signal(self, name, signal, metadata={}):
-        # TODO: Docstring!
+        '''Add a hyperspy signal to the EMD instance and make sure all metadata is present.
+
+        Parameters
+        ----------
+        name: string
+            Name of the (used as a key for the `data` dictionary).
+        signal: :class:`~hyperspy.signal.Signal`
+            HyperSpy signal which should be added to the EMD instance.
+        metadata: dictionary
+            Dictionary which holds signal specific metadata which will be added to the signal.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        This is the preferred way to add signals to the EMD instance. Directly adding to the `data`
+        dictionary is possible but does not make sure all metadata are correct.
+
+        '''
         self._log.debug('Calling add_signal')
         # Save title:
         signal.metadata.General.title = name
@@ -118,23 +161,19 @@ class EMD(object):
         self.data[name] = signal
 
     def save_to_emd(self, filename='datacollection.emd'):
-        '''Save :class:`~.PhaseMap` data in a file with emd(hdf5)-format.
+        '''Save :class:`~.EMD` data in a file with emd(hdf5)-format.
 
         Parameters
         ----------
         filename : string, optional
-            The name of the emd-file in which to store the phase data.
-            The default is '..\output\phasemap.emd'.
+            The name of the emd-file in which to store the data.
+            The default is 'datacollection.emd'.
 
         Returns
         -------
         None
 
-        Notes
-        -----
-        Does not save the unit of the original phase map.
-
-        '''  # TODO: Docstring!
+        '''
         self._log.debug('Calling save_to_emd')
         # Open file:
         emd_file = h5py.File(filename, 'w')
@@ -164,27 +203,22 @@ class EMD(object):
             self._write_signal_to_group(data_group, signal)
         # Close file and return EMD object:
         emd_file.close()
-        return emd
 
     @classmethod
     def load_from_emd(cls, filename):
-        '''Construct :class:`~.PhaseMap` object from NetCDF4-file.
+        '''Construct :class:`~.EMD` object from an emd-file.
 
         Parameters
         ----------
         filename : string
-            The name of the NetCDF4-file from which to load the data. Standard format is '\*.nc'.
+            The name of the emd-file from which to load the data. Standard format is '*.emd'.
 
         Returns
         -------
-        phase_map: :class:`~.PhaseMap`
-            A :class:`~.PhaseMap` object containing the loaded data.
+        emd: :class:`~.EMD`
+            A :class:`~.EMD` object containing the loaded data.
 
-        Notes
-        -----
-        Does not recover the unit of the original phase map, defaults to `'rad'`.
-
-        '''  # TODO: Docstring!
+        '''
         cls._log.debug('Calling load_from_ems')
         # Read in file:
         emd_file = h5py.File(filename, 'r')
@@ -222,6 +256,17 @@ class EMD(object):
         return emd
 
     def print_info(self):
+        '''Print all relevant information about the EMD instance.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        '''
         self._log.debug('Calling print_info')
         print '\nUser:\n--------------------'
         for key, value in self.user.iteritems():
@@ -238,13 +283,13 @@ class EMD(object):
         print '--------------------\n\nData:\n--------------------'
         for key, value in self.data.iteritems():
             print '{}:'.format(key).ljust(15), value
-            print value.metadata
+            print value.metadata.Signal
         print '--------------------\n'
 
 # TODO: function to generate subsets of datasets! List as input!
 
-#if __name__ == '__main__':
-#    emd = EMD.load_from_emd('C:\Users\Jan\Desktop\EMD\Si3N4_0001_multislice.emd')
-#    print emd.data.values()[0].metadata
-#    emd.save_to_emd('test.emd')
-#    EMD.load_from_emd('test.emd').print_info()
+if __name__ == '__main__':
+    emd = EMD.load_from_emd('C:\Users\Jan\Desktop\EMD\Si3N4_0001_multislice.emd')
+    print emd.data.values()[0].metadata
+    emd.save_to_emd('test.emd')
+    EMD.load_from_emd('test.emd').print_info()
