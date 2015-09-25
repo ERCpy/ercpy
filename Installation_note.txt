@@ -1,0 +1,26 @@
+1/ Installation notice for Hyperspy:
+Instal Python2.7
+
+2/ Installation of Hyperspy itself
+sudo pip install hyperspy or easy_install hyperspy
+
+3/ You may have to install the following packages, we have to test on different machines what is realy needed
+sudo apt-get install python-numpy python-matplotlib ipython ipython-notebook python-traits python-traitsui python-h5py python-scikits-learn python-nose python-statsmodels
+
+sudo apt-get install build-essential python-dev python-setuptools python-numpy python-scipy libatlas-dev libatlas3gf-base
+
+sudo update-alternatives --set libblas.so.3 /usr/lib/atlas-base/atlas/libblas.so.3
+sudo update-alternatives --set liblapack.so.3 /usr/lib/atlas-base/atlas/liblapack.so.3
+
+sudo apt-get install python-matplotlib
+
+#To run hyperspy using a notebook
+ipython notebook --profile=hyperspy
+
+#import the hyperspy package using:
+import hyperspy.api as hp
+(import hyperspy.hspy as hp is not the standard way to do it anymore)
+
+Please try and send me back your comments
+
+Martial
