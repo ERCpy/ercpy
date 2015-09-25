@@ -37,4 +37,9 @@ ehthumbs.db
 Thumbs.db
 
 # Spyder files#
+###############
 .spyderworkspace
+
+# IPy misc files#
+#################
+.ipynb_checkpoint/

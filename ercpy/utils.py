@@ -2,6 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import draw
+from scipy.fftpack import ifft2,fftshift,fft2,ifftshift
+from scipy.signal import correlate2d, medfilt
+import matplotlib.cm as cm
+from skimage.feature import register_translation
+from skimage.feature.register_translation import _upsampled_dft
 
 def fib(n):    # write Fibonacci series up to n
     a, b = 0, 1
@@ -148,3 +153,138 @@ def wrap(angle):
     @rtype : float
     '''
     return angle % (2 * np.pi )
+    
+def align_img(img_one, img_two, method = 'imgreg', sb_filtering= False, filt_size= 200, **kwargs):
+    '''
+    Function to align images or holograms using X-correlation
+    Parameters
+    ----------
+    img_one : ndarray
+        The refrence image
+    img_two : ndarray
+        An image to align
+    sb_filtering : boolean
+        Set True, to apply for holograms
+    filt_size : int
+        size of the filter for main band filtering
+        used only for alignment of holograms
+        
+    Returns
+    -------
+    img_algn : ndarray
+        Aligned image img_two
+    (xdrift, ydrift): tuple
+        drift correction coordinates
+
+    Notes
+    -----
+    
+    See Also
+    --------
+
+    '''
+    
+    (ry,cx) = img_one.shape
+#    img_one = img_one.astype(float)
+#    img_two = img_two.astype(float)
+    
+    # --- IFFT main band:
+    if sb_filtering:
+        fft_img_one = fftshift(fft2(img_one))
+        (xx,yy) = np.meshgrid(np.linspace(-ry/2, ry/2-1, ry), np.linspace(-cx/2, cx/2-1, cx))
+        rr = np.sqrt(xx**2+yy**2)
+        mask = np.zeros((ry,cx))
+        mask[rr<filt_size] = 1
+        img_one_m = np.absolute(ifft2(ifftshift(fft_img_one*mask)))
+        # --- Processing second image
+        fft_img_two = fftshift(fft2(img_two))
+        img_two_m = np.absolute(ifft2(ifftshift(fft_img_two*mask)))
+    else:
+        img_one_m = img_one
+        img_two_m = img_two
+    if 0: # slow X-cor for small images only!
+        # --- GUI based assignment of ROI
+        f, ax = plt.subplots(1, 1)
+        ax.imshow(img_one_m, cmap=cm.binary_r)
+        rect = RoiRect()
+        f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(5)
+        plt.waitforbuttonpress(5)
+        plt.close(f)
+        
+        # --- Selecting ROI and X-correlating
+        template = img_one_m[rect.y0:rect.y1, rect.x0:rect.x1]
+        cc = correlate2d(template,img_two_m)
+        imax = np.argmax(np.absolute(cc))
+        ypeak, xpeak = np.unravel_index(imax, cc.shape) # coordinates of X-corr max
+        ydrift = rect.y0-ypeak-template.shape[0]-1
+        xdrift = rect.x0-xpeak-template.shape[1]-1
+    else:
+        # --- GUI based assignment of ROI
+        f, ax = plt.subplots(1, 1)
+        ax.imshow(img_one_m, cmap=cm.binary_r)
+        rect = RoiRect()
+        f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(5)
+        plt.waitforbuttonpress(5)
+        plt.close(f)
+        img_one_roi = img_one_m[rect.y0:rect.y1, rect.x0:rect.x1]
+        img_two_roi = img_two_m[rect.y0:rect.y1, rect.x0:rect.x1]
+        
+        px_rescale_y = np.float(img_one_m.shape[0])/np.float(img_one_roi.shape[0])
+        px_rescale_x = np.float(img_one_m.shape[1])/np.float(img_one_roi.shape[1])
+        upsample = np.min((px_rescale_x, px_rescale_y))
+        # --- Upsampled image registration for ROI
+        shift, error, diffphase = register_translation(img_one_roi, img_two_roi, upsample)
+        
+        ydrift = shift[0]
+        xdrift = shift[1]
+        print(shift)
+        
+        # --- Accounting for change in pixel size        
+        ydrift = ydrift*px_rescale_y
+        xdrift = xdrift*px_rescale_x
+
+    print("xydrift = %d, %d" % (xdrift, ydrift) )
+    
+    img_algn = np.roll(img_two, np.int(ydrift), axis=0)
+    img_algn = np.roll(img_algn, np.int(xdrift), axis=1)
+    return (img_algn, (xdrift, ydrift))
+    
+    
+def rm_duds(img, sigma=8.0, median_k=5):
+    '''
+    Removes dud pixels from images
+    
+    Parameters
+    ----------
+    img : ndarray
+        The image
+    sigma : float
+    
+    median_k : int
+        Size of median kernel
+        
+    Returns
+    -------
+    img_nodud : ndarray
+        Image with removed dud pixels (e.g. X-Rays spikes)
+
+    Notes
+    -----
+    
+    See Also
+    --------
+
+    '''
+    # TODO: check if 1D for spectrum works as well
+    img_mf = medfilt(img, median_k) # median filtered image
+    diff_img = np.absolute(img-img_mf)
+    mean_diff = sigma*np.sqrt(np.var(diff_img))
+    duds = diff_img > mean_diff
+    img[duds] = img_mf[duds]
+    
+    n_duds = np.sum(duds) # dud pixels
+    print "The number of pixels changed = %d" % n_duds
+    
+    return (img, duds)
