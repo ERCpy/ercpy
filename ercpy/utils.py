@@ -154,7 +154,7 @@ def wrap(angle):
     '''
     return angle % (2 * np.pi )
     
-def align_img(img_one, img_two, sb_filtering= False, filt_size= 200, **kwargs):
+def align_img(img_one, img_two, method = 'imgreg', roi=True, sb_filtering=False, filt_size= 200, feducial=1, manualxy = None, **kwargs):
     '''
     Function to align images or holograms using X-correlation
     Parameters
@@ -163,11 +163,22 @@ def align_img(img_one, img_two, sb_filtering= False, filt_size= 200, **kwargs):
         The refrence image
     img_two : ndarray
         An image to align
+    method : string
+        Either 'imgreg' to use image registartion from skimage, 
+        or 'xcorr' to use crosscorrelation in real space from scipy,
+        or 'feducial' to use feducial markers,
+        or 'manual' to displace the images manually.
+    roi : boolean
+        Set true to do alignament on ROI instead of whole image
     sb_filtering : boolean
         Set True, to apply for holograms
     filt_size : int
-        size of the filter for main band filtering
+        Size of the filter for main band filtering
         used only for alignment of holograms
+    feducial : int
+        Number of feducial markers for 'feducial' method
+    manualxy : tuple of 2 int
+        Coordiantes x,y for manual alignment
         
     Returns
     -------
@@ -178,6 +189,7 @@ def align_img(img_one, img_two, sb_filtering= False, filt_size= 200, **kwargs):
 
     Notes
     -----
+    Manual alignamnt method requiers cooridnates provided using 'manualxy' parameter
     
     See Also
     --------
@@ -202,7 +214,9 @@ def align_img(img_one, img_two, sb_filtering= False, filt_size= 200, **kwargs):
     else:
         img_one_m = img_one
         img_two_m = img_two
-    if 0: # slow X-cor for small images only!
+      
+    # --- Use ROI if True
+    if roi:
         # --- GUI based assignment of ROI
         f, ax = plt.subplots(1, 1)
         ax.imshow(img_one_m, cmap=cm.binary_r)
@@ -211,23 +225,16 @@ def align_img(img_one, img_two, sb_filtering= False, filt_size= 200, **kwargs):
         plt.waitforbuttonpress(5)
         plt.waitforbuttonpress(5)
         plt.close(f)
-        
-        # --- Selecting ROI and X-correlating
-        template = img_one_m[rect.y0:rect.y1, rect.x0:rect.x1]
-        cc = correlate2d(template,img_two_m)
-        imax = np.argmax(np.absolute(cc))
-        ypeak, xpeak = np.unravel_index(imax, cc.shape) # coordinates of X-corr max
-        ydrift = rect.y0-ypeak-template.shape[0]-1
-        xdrift = rect.x0-xpeak-template.shape[1]-1
     else:
-        # --- GUI based assignment of ROI
-        f, ax = plt.subplots(1, 1)
-        ax.imshow(img_one_m, cmap=cm.binary_r)
-        rect = RoiRect()
-        f.canvas.manager.window.raise_()
-        plt.waitforbuttonpress(5)
-        plt.waitforbuttonpress(5)
-        plt.close(f)
+        rect = Rectangle((0,0), 1, 1,fc='none', ec='r')
+        rect.x0 = 0
+        rect.y0 = 0
+        rect.y1 = ry-1
+        rect.x1 = cx-1
+
+    # --- Select allignment method
+    if method is 'imgreg':
+        
         img_one_roi = img_one_m[rect.y0:rect.y1, rect.x0:rect.x1]
         img_two_roi = img_two_m[rect.y0:rect.y1, rect.x0:rect.x1]
         
@@ -243,7 +250,19 @@ def align_img(img_one, img_two, sb_filtering= False, filt_size= 200, **kwargs):
         
         # --- Accounting for change in pixel size        
         ydrift = ydrift*px_rescale_y
-        xdrift = xdrift*px_rescale_x
+        xdrift = xdrift*px_rescale_x    
+
+    elif method is 'xcorr': # slow X-cor for small images only!
+    
+        # --- Selecting ROI and X-correlating
+        template = img_one_m[rect.y0:rect.y1, rect.x0:rect.x1]
+        cc = correlate2d(template,img_two_m)
+        imax = np.argmax(np.absolute(cc))
+        ypeak, xpeak = np.unravel_index(imax, cc.shape) # coordinates of X-corr max
+        ydrift = rect.y0-ypeak-template.shape[0]-1
+        xdrift = rect.x0-xpeak-template.shape[1]-1
+    else:
+        raise ValueError('Wrong method argument! Check doc.')
 
     print("xydrift = %d, %d" % (xdrift, ydrift) )
     
