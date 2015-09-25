@@ -154,7 +154,7 @@ def wrap(angle):
     '''
     return angle % (2 * np.pi )
     
-def align_img(img_one, img_two, method = 'imgreg', sb_filtering= False, filt_size= 200, **kwargs):
+def align_img(img_one, img_two, sb_filtering= False, filt_size= 200, **kwargs):
     '''
     Function to align images or holograms using X-correlation
     Parameters
