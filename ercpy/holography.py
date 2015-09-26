@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 # from PIL import Image
 # import time
-# import utils
+import utils
 
 # from matplotlib.patches import Rectangle
 # import hyperspy as hs
