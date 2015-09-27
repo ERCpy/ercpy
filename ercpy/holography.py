@@ -1,6 +1,10 @@
 '''
 Holography module
 
+Dependencies
+------------
+ercpy.utils
+
 '''
 import numpy as np
 from numpy.linalg import norm
@@ -11,10 +15,27 @@ import matplotlib.cm as cm
 # from PIL import Image
 # import time
 
-import utils # might have to be comented if utils imported centrally with ercPy
-
 # from matplotlib.patches import Rectangle
 # import hyperspy as hs
+
+# PHASE UNWRAPPING #
+####################
+# 1) https://github.com/geggo/phase-unwrap
+#   Algorithm based on:
+#  M. A. Herraez, D. R. Burton, M. J. Lalor, and M. A. Gdeisat,
+#  "Fast two-dimensional phase-unwrapping algorithm based on sorting by reliability following a noncontinuous path",
+#   Applied Optics, Vol. 41, Issue 35, pp. 7437-7444 (2002)
+from skimage.restoration import unwrap_phase as unwrap
+#   usage: phase_unw = holo.unwrap(phase)
+# 2) Good C code with Python front end
+#   http://www.cio.mx/~jestrada/phase_unwrapping2.html
+#   https://github.com/trago/fringeproc
+# x) Other sources:
+#   http://nova.stanford.edu/sar_group/snaphu/
+#   http://roipac.org/cgi-bin/moin.cgi/PhaseFiltUnwrap
+#   http://community.dur.ac.uk/n.a.bharmal/phaseUnwrappingWithPython.html
+#   http://www.lx.it.pt/~bioucas/code.htm
+####################
 
 def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kwargs):
     '''Reconstruct holography data
