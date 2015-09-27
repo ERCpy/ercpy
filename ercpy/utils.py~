@@ -149,3 +149,20 @@ def hspy_to_2Dnp(hyperspy_signal):
 	TwoDnp = hyperspy_signal.data.reshape(a0*b0,c0)
 
     return TwoDnp
+
+def fct_whitening(data_input):
+    """
+    Transform the data to meet assumptions of the statistical decomposition to be performed.
+
+    Input:
+	2D numpy array of the data to be whitened
+
+    Output:
+	2D numpy array of the whitened data
+    """
+
+    return data_input
+
+
+
+
