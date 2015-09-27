@@ -2,6 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import draw
+import sys
+import io
+import os
+from IPython.nbformat.current import read, write
 
 class RoiRect(object):
     ''' Class for getting a mouse drawn rectangle
@@ -149,3 +153,22 @@ def hspy_to_2Dnp(hyperspy_signal):
 	TwoDnp = hyperspy_signal.data.reshape(a0*b0,c0)
 
     return TwoDnp
+
+def remove_outputs(fname):
+    """
+    remove the outputs from a notebook "fname" and create a new notebook
+    """
+    with io.open(fname, 'r') as f:
+	nb = read(f, 'json')
+    for ws in nb.worksheets:
+        for cell in ws.cells:
+            if cell.cell_type == 'code':
+                cell.outputs = []
+
+    base, ext = os.path.splitext(fname)
+    new_ipynb = "%s_removed%s" % (base, ext)
+    with io.open(new_ipynb, 'w', encoding='utf8') as f:
+        write(nb, f, 'json')
+    print "wrote %s" % new_ipynb
+
+    return "Done"
