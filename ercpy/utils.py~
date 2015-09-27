@@ -2,6 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import draw
+import sys
+import io
+import os
+from IPython.nbformat.current import read, write
 
 class RoiRect(object):
     ''' Class for getting a mouse drawn rectangle
@@ -150,19 +154,21 @@ def hspy_to_2Dnp(hyperspy_signal):
 
     return TwoDnp
 
-def fct_whitening(data_input):
+def remove_outputs(fname):
     """
-    Transform the data to meet assumptions of the statistical decomposition to be performed.
-
-    Input:
-	2D numpy array of the data to be whitened
-
-    Output:
-	2D numpy array of the whitened data
+    remove the outputs from a notebook "fname" and create a new notebook
     """
+    with io.open(fname, 'r') as f:
+	nb = read(f, 'json')
+    for ws in nb.worksheets:
+        for cell in ws.cells:
+            if cell.cell_type == 'code':
+                cell.outputs = []
 
-    return data_input
+    base, ext = os.path.splitext(fname)
+    new_ipynb = "%s_removed%s" % (base, ext)
+    with io.open(new_ipynb, 'w', encoding='utf8') as f:
+        write(nb, f, 'json')
+    print "wrote %s" % new_ipynb
 
-
-
-
+    return 0
