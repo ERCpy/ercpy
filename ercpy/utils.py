@@ -3,20 +3,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import draw
 # import matplotlib.cm as cm
-
-def fib(n):    # write Fibonacci series up to n
-    a, b = 0, 1
-    while b < n:
-        print b,
-        a, b = b, a+b
-
-def fib2(n): # return Fibonacci series up to n
-    result = []
-    a, b = 0, 1
-    while b < n:
-        result.append(b)
-        a, b = b, a+b
-    return result
+import sys
+import io
+import os
+from IPython.nbformat.current import read, write
 
 class RoiRect(object):
     ''' Class for getting a mouse drawn rectangle
