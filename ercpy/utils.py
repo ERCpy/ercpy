@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import draw
+# import matplotlib.cm as cm
 import sys
 import io
 import os
@@ -61,6 +62,68 @@ class RoiRect(object):
         self.rect.set_xy((self.x0, self.y0))
         self.ax.figure.canvas.draw()
 
+class RoiPoint(object):
+    ''' Class for getting a mouse drawn rectangle
+    Based on the example from:
+    http://matplotlib.org/users/event_handling.html#draggable-rectangle-exercise
+    Note that:
+    
+    * It makes only one roi
+    
+    '''
+    def __init__(self):
+        self.ax = plt.gca()
+#        self.rect = Rectangle((0,0), 1, 1,fc='none', ec='r')
+        self.x0 = None
+        self.y0 = None
+        self.visible = True
+        self.set = False
+        self.plt_style = 'r+'
+#        self.x1 = None
+#        self.y1 = None
+#        self.ax.add_patch(self.rect)
+        self.ax.figure.canvas.mpl_connect('button_press_event', self.on_press)
+        self.ax.figure.canvas.mpl_connect('button_release_event', self.on_release)
+#        self.ax.figure.canvas.mpl_connect('motion_notify_event', self.on_motion)
+
+    def on_press(self, event):
+        if not self.set:        
+            print 'press'
+            self.x0 = event.xdata
+            self.y0 = event.ydata
+        
+            self.draw()
+
+    def on_release(self, event):
+        if not self.set:
+            print 'release'
+#        self.x1 = event.xdata
+#        self.y1 = event.ydata
+#        self.rect.set_width(self.x1 - self.x0)
+#        self.rect.set_height(self.y1 - self.y0)
+#        self.rect.set_xy((self.x0, self.y0))
+#        self.rect.set_linestyle('solid')
+            self.ax.figure.canvas.draw()
+            self.set = True
+            self.ax.figure.canvas.mpl_disconnect('button_press_event')
+            self.ax.figure.canvas.mpl_disconnect('button_release_event')
+
+    def draw(self):
+        if not self.visible:
+            return
+        self.ax.plot(self.x0, self.y0, self.plt_style)
+        
+#    def on_motion(self, event):
+#        # on motion will move the rect if the mouse
+#        if self.x0 is None: return
+#        if self.set: return
+#        # if event.inaxes != self.rect.axes: return
+#        self.x1 = event.xdata
+#        self.y1 = event.ydata
+#        self.rect.set_width(self.x1 - self.x0)
+#        self.rect.set_height(self.y1 - self.y0)
+#        self.rect.set_xy((self.x0, self.y0))
+#        self.ax.figure.canvas.draw()
 #class roi_rect_new(object):
 #    ''' Class for getting a mouse drawn rectangle
 #    '''
