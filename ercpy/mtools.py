@@ -50,9 +50,10 @@ def align_img(img_one, img_two, method = 'imgreg', show=False, roi=True, sb_filt
         Either 'imgreg' to use image registartion from skimage, 
         or 'xcorr' to use crosscorrelation in real space from scipy,
         or 'feducial' to use feducial markers,
-        or 'manual' to displace the images manually.
-    show : boolean
-        Set True to plot the results
+        or 'manual' to displace the images manually
+#        or 'gui_shift' to shift image intractively
+    show : boolean or string
+        Set True to plot the results, set 'diff' to show difference of the images
     roi : boolean
         Set true to do alignament on ROI instead of whole image
     sb_filtering : boolean
@@ -177,6 +178,15 @@ def align_img(img_one, img_two, method = 'imgreg', show=False, roi=True, sb_filt
         xdrift = marker_one.x0 - marker_two.x0
         ydrift = marker_one.y0 - marker_two.y0
         
+    elif method is 'manual':
+        if manualxy:
+            xdrift = manualxy[0]
+            ydrift = manualxy[1]
+        else:
+            raise ValueError('Method manual requires shifts provided in manualxy argument.')
+            
+#    elif method is 'gui_shift': #TODO: create 'gui_shift' method
+        
     else:
         raise ValueError('Wrong method argument! Check doc.')
 
@@ -185,7 +195,12 @@ def align_img(img_one, img_two, method = 'imgreg', show=False, roi=True, sb_filt
     img_algn = np.roll(img_two, np.int(ydrift), axis=0)
     img_algn = np.roll(img_algn, np.int(xdrift), axis=1)
     
-    if show:
+    if isinstance(show, basestring):
+        if show is 'diff':
+            f, ax = plt.subplots(1,1)
+            ax.imshow(img_algn - img_one, cmap=cm.binary_r)
+            ax.set_title(('xydrift = ', str(xdrift), str(ydrift)))
+    elif show:
         f, ax = plt.subplots(1,1)
         ax.imshow(img_algn, cmap=cm.binary_r)
     return (img_algn, (xdrift, ydrift))
