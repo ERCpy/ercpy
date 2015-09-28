@@ -111,8 +111,8 @@ def align_img(img_one, img_two, method = 'imgreg', show=False, roi=True, sb_filt
         f, ax = plt.subplots(1, 1)
         ax.imshow(img_one_m, cmap=cm.binary_r)
         rect = utils.RoiRect()
-        f.canvas.manager.window.raise_()
-        plt.waitforbuttonpress(5)
+        if hasattr(f.canvas.manager, 'window'): f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(100)
         plt.waitforbuttonpress(5)
         plt.close(f)
     else:
@@ -157,22 +157,26 @@ def align_img(img_one, img_two, method = 'imgreg', show=False, roi=True, sb_filt
         xdrift = (xpeak-(rect.x1-rect.x0)/2)*binning
         
     elif method is 'feducial': # alignment using feducial markers
+        # TODO: add multiple marker alignments
+        img_one_roi = img_one_m[rect.y0:rect.y1, rect.x0:rect.x1]
+        img_two_roi = img_two_m[rect.y0:rect.y1, rect.x0:rect.x1]
+        
         f, ax = plt.subplots(1, 1)
-        ax.imshow(img_one_m, cmap=cm.binary_r)
+        ax.imshow(img_one_roi, cmap=cm.binary_r)
         ax.set_title('Please set feducial marker position for 1st image')
         marker_one = utils.RoiPoint()
-        f.canvas.manager.window.raise_()
-        plt.waitforbuttonpress(5)
-        plt.waitforbuttonpress(5)
+        if hasattr(f.canvas.manager, 'window'): f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(100)
+        plt.waitforbuttonpress(1)
         plt.close(f)
         
         f, ax = plt.subplots(1, 1)
-        ax.imshow(img_two_m, cmap=cm.binary_r)
+        ax.imshow(img_two_roi, cmap=cm.binary_r)
         ax.set_title('Please set feducial marker position for 2nd image')
         marker_two = utils.RoiPoint()
-        f.canvas.manager.window.raise_()
-        plt.waitforbuttonpress(5)
-        plt.waitforbuttonpress(5)
+        if hasattr(f.canvas.manager, 'window'): f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(100)
+        plt.waitforbuttonpress(1)
         plt.close(f)
         
         xdrift = marker_one.x0 - marker_two.x0
