@@ -76,7 +76,7 @@ def VCA_decomposition(hyperspy_signal, nbr_compo, centering, normalization, whit
 	while i < S.size:
 		S_diag[i,i] = 1/np.sqrt(S[i]+epsilon)
 		i += 1
-	xRot = np.dot(S_diag, xRot)
+	xRot = np.dot(S_diag, data_input)
 
     del(S)
     del(S_diag)
