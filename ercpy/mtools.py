@@ -36,7 +36,7 @@ def fft(img):
     plt.imshow(np.log(np.absolute(fft_data)), cmap=cm.binary_r)
     
     
-def align_img(img_one, img_two, method = 'imgreg', roi=True, sb_filtering=False, filt_size= 200,
+def align_img(img_one, img_two, method = 'imgreg', show=False, roi=True, sb_filtering=False, filt_size= 200,
               binning=2, feducial=1, manualxy = None, **kwargs):
     '''
     Function to align images or holograms using X-correlation
@@ -51,6 +51,8 @@ def align_img(img_one, img_two, method = 'imgreg', roi=True, sb_filtering=False,
         or 'xcorr' to use crosscorrelation in real space from scipy,
         or 'feducial' to use feducial markers,
         or 'manual' to displace the images manually.
+    show : boolean
+        Set True to plot the results
     roi : boolean
         Set true to do alignament on ROI instead of whole image
     sb_filtering : boolean
@@ -125,9 +127,9 @@ def align_img(img_one, img_two, method = 'imgreg', roi=True, sb_filtering=False,
         img_one_roi = img_one_m[rect.y0:rect.y1, rect.x0:rect.x1]
         img_two_roi = img_two_m[rect.y0:rect.y1, rect.x0:rect.x1]
         
-        px_rescale_y = np.float(img_one_m.shape[0])/np.float(img_one_roi.shape[0])
-        px_rescale_x = np.float(img_one_m.shape[1])/np.float(img_one_roi.shape[1])
-        upsample = np.min((px_rescale_x, px_rescale_y))
+#        px_rescale_y = np.float(img_one_m.shape[0])/np.float(img_one_roi.shape[0])
+#        px_rescale_x = np.float(img_one_m.shape[1])/np.float(img_one_roi.shape[1])
+        upsample = 4
         # --- Upsampled image registration for ROI
         shift, error, diffphase = register_translation(img_one_roi, img_two_roi, upsample)
         
@@ -135,12 +137,12 @@ def align_img(img_one, img_two, method = 'imgreg', roi=True, sb_filtering=False,
         xdrift = shift[1]
         print(shift)
         
-        # --- Accounting for change in pixel size        
-        ydrift = ydrift*px_rescale_y
-        xdrift = xdrift*px_rescale_x    
+#        # --- Accounting for change in pixel size   <- is not needed since ROI doesn't change px-size!!     
+#        ydrift = ydrift*px_rescale_y
+#        xdrift = xdrift*px_rescale_x    
 
     elif method is 'xcorr': # slow X-cor for small images only!
-    
+        # TODO: Check if the metod is working properly
         # --- Selecting ROI and X-correlating
         img_one_m = imresize(img_one_m, 1.0/binning)
         img_two_m = imresize(img_two_m, 1.0/binning)
@@ -153,8 +155,28 @@ def align_img(img_one, img_two, method = 'imgreg', roi=True, sb_filtering=False,
         ydrift = (ypeak-(rect.y1-rect.y0)/2)*binning
         xdrift = (xpeak-(rect.x1-rect.x0)/2)*binning
         
-#    elif method is 'feducial':
-            
+    elif method is 'feducial': # alignment using feducial markers
+        f, ax = plt.subplots(1, 1)
+        ax.imshow(img_one_m, cmap=cm.binary_r)
+        ax.set_title('Please set feducial marker position for 1st image')
+        marker_one = utils.RoiPoint()
+        f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(5)
+        plt.waitforbuttonpress(5)
+        plt.close(f)
+        
+        f, ax = plt.subplots(1, 1)
+        ax.imshow(img_two_m, cmap=cm.binary_r)
+        ax.set_title('Please set feducial marker position for 2nd image')
+        marker_two = utils.RoiPoint()
+        f.canvas.manager.window.raise_()
+        plt.waitforbuttonpress(5)
+        plt.waitforbuttonpress(5)
+        plt.close(f)
+        
+        xdrift = marker_one.x0 - marker_two.x0
+        ydrift = marker_one.y0 - marker_two.y0
+        
     else:
         raise ValueError('Wrong method argument! Check doc.')
 
@@ -162,6 +184,10 @@ def align_img(img_one, img_two, method = 'imgreg', roi=True, sb_filtering=False,
     
     img_algn = np.roll(img_two, np.int(ydrift), axis=0)
     img_algn = np.roll(img_algn, np.int(xdrift), axis=1)
+    
+    if show:
+        f, ax = plt.subplots(1,1)
+        ax.imshow(img_algn, cmap=cm.binary_r)
     return (img_algn, (xdrift, ydrift))
 
     
