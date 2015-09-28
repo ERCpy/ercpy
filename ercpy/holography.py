@@ -81,8 +81,9 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
     
     # getting rectangular ROI
         rect = utils.RoiRect()
-        f.canvas.manager.window.raise_()
-        plt.waitforbuttonpress(5)
+        if hasattr(f.canvas.manager, 'window'):  f.canvas.manager.window.raise_()
+        
+        plt.waitforbuttonpress(100)
         plt.waitforbuttonpress(5)
         arect=eh_hw_fft[rect.y0:rect.y1, rect.x0:rect.x1] #<----- use this one in the case of usage of rect_roi obj
         # Sideband position,find the max number and its [c,r]
