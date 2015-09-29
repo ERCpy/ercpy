@@ -37,7 +37,11 @@ from skimage.restoration import unwrap_phase as unwrap
 #   http://www.lx.it.pt/~bioucas/code.htm
 ####################
 
-def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kwargs):
+
+__all__ = ['holo_reconstruct', 'unwrap']
+
+
+def holo_reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kwargs):
     '''Reconstruct holography data
 
     Parameters
@@ -49,8 +53,8 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
     rec_param : tuple
         Reconstruction parameters in sequence (SBrect(x0, y0, x1, y1), SB size)
     show_phase : boolean
-        set True to plot phase after the reconstruction        
-        
+        set True to plot phase after the reconstruction
+
     Returns
     -------
     wave : ndarray
@@ -65,19 +69,19 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
     Notes
     -----
     The reconstruction parameters assigned interactively if rec_param is not givven
-    
+
     See Also
     --------
     reconstruct_holo
 
     '''
-    
+
     (sx,sy)=holo_data.size
     eh_hw_fft = fftshift(fft2(holo_data))
     if rec_param is None:
         f, ax = plt.subplots(1, 1)
         ax.imshow(np.log(np.absolute(eh_hw_fft)), cmap=cm.binary_r) # Magnification might be added;
-    
+
     # getting rectangular ROI
         rect = utils.RoiRect()
         f.canvas.manager.window.raise_()
@@ -94,7 +98,7 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
         sb_size=np.round(np.array([a/3, a/2, a])*(norm(np.subtract(sb_pos,[sx/2, sy/2]))*np.sqrt(2)))
         sb_size=sb_size-np.mod(sb_size,2) # to be sure of even number, still questionable if it is needed
         print "Sideband range in pixels"
-        print "%d %d %d" % (sb_size[0], sb_size[1], sb_size[2])    
+        print "%d %d %d" % (sb_size[0], sb_size[1], sb_size[2])
         # Choose SideBand size
         sb_size=input("Choose Sideband size  pixel = ")
         sb_size=sb_size-np.mod(sb_size,2) # to be sure of even number...
@@ -113,39 +117,39 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
     if ref_data is None:
         w_ref = 1
     else:
-        w_ref = reconstruct_holo(ref_data,sb_size,sb_pos,[],[]) #reference electron wave
-        
-    w_obj = reconstruct_holo(holo_data,sb_size,sb_pos,[],[]) #object wave
-    
+        w_ref = _reconstruct(ref_data,sb_size,sb_pos,[],[]) #reference electron wave
+
+    w_obj = _reconstruct(holo_data,sb_size,sb_pos,[],[]) #object wave
+
     wave = w_obj/w_ref
     phase = np.angle(wave)
     amp = np.absolute(wave)
-    
+
     if show_phase:
         f, ax = plt.subplots(1, 1)
         ax.imshow(phase, cmap=cm.binary_r)
         f.canvas.manager.window.raise_()
-    
+
     return (wave, phase, amp, rec_param)
-    
-    
-    
-    
-def reconstruct_holo(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
+
+
+
+
+def _reconstruct(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
     '''Core function for holographic reconstruction performing following steps:
-    
+
     * 2D FFT without apodisation;
-    
+
     * Cutting out sideband;
-    
+
     * Centering sideband;
-    
+
     * Applying round window;
-    
+
     * Applying sinc filter;
-    
+
     * Applying automatic filtering of Fresnel fringe (Fresnel filtering);
-    
+
     * Inverse FFT.
 
     Parameters
@@ -160,7 +164,7 @@ def reconstruct_holo(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
         The ratio of Fresnel filter with respect to the sideband size
     fresnel_width : int
         Width of frsnel filter in px
-    
+
     Returns
     -------
         wav : nparray
@@ -169,26 +173,26 @@ def reconstruct_holo(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
     Notes
     -----
 
-    Disabeling of Fresnel filter is not implemented    
-    
+    Disabeling of Fresnel filter is not implemented
+
     See Also
     --------
-    
+
     reconstruct
-    
+
     '''
     # TODO: Parsing of the input has to be redone
     # TODO: Add disabling of Fresnel filtering
     # TODO: Add smoothing of Fresnel filter
     # TODO: Add smoothing options?
-    
+
     # Parse input
     if not fresnel_ratio: # fresnenl_ratio is empty or 0
         fresnel_ratio=0.3
-        
+
     if not fresnel_width: # fresnel_width is emty or 0
         fresnel_width=6
-        
+
     (sx,sy) = holo_data.size
     holo_data = np.float64(holo_data);
 
@@ -197,20 +201,20 @@ def reconstruct_holo(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
 
     sb_roi = h_hw_fft[sb_pos[0]-sb_size/2:sb_pos[0]+sb_size/2,
                       sb_pos[1]-sb_size/2:sb_pos[1]+sb_size/2]
-              
+
     (sb_ny,sb_nx) = sb_roi.shape
     sb_l=min(sb_ny/2, sb_nx/2)
     cen_yx=[sb_ny/2, sb_nx/2]
-              
+
     # Circular Aperture
     cgrid_y = np.arange(-sb_ny/2, sb_ny/2, 1)
     cgrid_x = np.arange(-sb_nx/2, sb_nx/2, 1)
     (sb_xx,sb_yy) = np.meshgrid(cgrid_x,cgrid_y)
     sb_r = np.sqrt(sb_xx**2 + sb_yy**2)
     c_mask = np.zeros((sb_nx,sb_ny)) # Original: cMask=zeros(SB_Ny,SB_Nx);
-    
+
     c_mask[sb_r < sb_l] = 1
-    
+
     # Fresnel Mask
     ang = np.arctan2((sx/2-sb_pos[0]),(sy/2-sb_pos[1])); #[-pi pi]
 
@@ -229,12 +233,12 @@ def reconstruct_holo(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
 
     abcd=np.array([aa,bb,cc,dd])
     f_mask = utils.poly_to_mask(abcd[:,1],abcd[:,0],sb_roi.shape)
-         
+
     sinc_k=5.0;    #Sink times SBsize
     w_one = np.sinc(np.linspace(-sb_size/2,sb_size/2,sb_size)*np.pi/(sinc_k*sb_size))
     w_one = w_one.reshape((sb_size,1))
     w_two = w_one.dot(w_one.reshape((1,sb_size)))
-    
+
     # IFFT
     wav = ifft2(fftshift(sb_roi*c_mask*np.logical_not(f_mask)*w_two))
     return wav
