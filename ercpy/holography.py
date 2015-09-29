@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 # from PIL import Image
 # import time
+import utils
 
 # from matplotlib.patches import Rectangle
 # import hyperspy as hs
@@ -42,9 +43,9 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
 
     Parameters
     ----------
-    holo_data : array_like
+    holo_data : ndarray
         The object hologram array.
-    ref_data : array_like
+    ref_data : ndarray
         The refernce hologram array.
     rec_param : tuple
         Reconstruction parameters in sequence (SBrect(x0, y0, x1, y1), SB size)
@@ -72,7 +73,7 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
 
     '''
     
-    (sx,sy)=holo_data.size
+    (sx,sy)=holo_data.shape
     eh_hw_fft = fftshift(fft2(holo_data))
     if rec_param is None:
         f, ax = plt.subplots(1, 1)
@@ -80,8 +81,9 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
     
     # getting rectangular ROI
         rect = utils.RoiRect()
-        f.canvas.manager.window.raise_()
-        plt.waitforbuttonpress(5)
+        if hasattr(f.canvas.manager, 'window'):  f.canvas.manager.window.raise_()
+        
+        plt.waitforbuttonpress(100)
         plt.waitforbuttonpress(5)
         arect=eh_hw_fft[rect.y0:rect.y1, rect.x0:rect.x1] #<----- use this one in the case of usage of rect_roi obj
         # Sideband position,find the max number and its [c,r]
@@ -127,9 +129,7 @@ def reconstruct(holo_data, ref_data=None, rec_param=None, show_phase=False, **kw
         f.canvas.manager.window.raise_()
     
     return (wave, phase, amp, rec_param)
-    
-    
-    
+        
     
 def reconstruct_holo(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
     '''Core function for holographic reconstruction performing following steps:
@@ -189,7 +189,7 @@ def reconstruct_holo(holo_data,sb_size,sb_pos,fresnel_ratio,fresnel_width):
     if not fresnel_width: # fresnel_width is emty or 0
         fresnel_width=6
         
-    (sx,sy) = holo_data.size
+    (sx,sy) = holo_data.shape
     holo_data = np.float64(holo_data);
 
 

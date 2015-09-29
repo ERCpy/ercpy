@@ -12,6 +12,8 @@ holography
     # TODO: Add description!
 eelsedx
     # TODO: Add description!
+mtools
+    # TODO: Add description!
 utils
     # TODO: Add description!
 
@@ -21,7 +23,7 @@ utils
 from .emd import *  # analysis:ignore
 import holography
 import eelsedx
-import utils
+import mtools
 import config
 from .version import version as __version__
 
@@ -30,5 +32,5 @@ _log = logging.getLogger(__name__)
 _log.info("Starting PYRAMID V{}".format(__version__))
 del logging
 
-__all__ = ['emd', 'holography', 'eelsedx', 'utils', 'config']
+__all__ = ['emd', 'holography', 'eelsedx', 'mtools', 'config']
 __all__.extend(emd.__all__)
