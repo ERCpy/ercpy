@@ -2,7 +2,7 @@ import ercpy.utils as ut
 import numpy as np
 import scipy.linalg as sc
 
-__all__ = ['fib', 'fib2']
+__all__ = ['Nbr_compotokeep', 'VCA_decomposition']
 
 from scipy.sparse.linalg import svds
 
@@ -23,7 +23,7 @@ def Nbr_compotokeep(hyperspy_signal, Prcent_to_keep):
 
     else:
 	print "Keep less than 100% for the decomposition"
-    
+
     return i
 
 def VCA_decomposition(hyperspy_signal, nbr_compo, centering, normalization, whitening):
@@ -37,9 +37,9 @@ def VCA_decomposition(hyperspy_signal, nbr_compo, centering, normalization, whit
 	nbr_compo: Number of dimensions on which you want to decompose your data (integer)
 	Centering (default True): subtract the mean of the vectors along the signal direction
 	Normalization (default True): Normalize the vectors to 1 along the signal direction
-	whitening (default True) 
-       
-    Outputs: 
+	whitening (default True)
+
+    Outputs:
 	Factors: 2D numpy array
         Loadings: 2D numpy array
     """
@@ -67,7 +67,7 @@ def VCA_decomposition(hyperspy_signal, nbr_compo, centering, normalization, whit
     del(V)
     U[:,:nbr_compo] = U[:, nbr_compo-1::-1]
     S = S[::-1]
-    
+
     #Projection of the data matrix to the sub-space composed of nbr_compo dimensions
     xRot = np.dot(np.transpose(U),T_data)
 
@@ -106,15 +106,3 @@ def VCA_decomposition(hyperspy_signal, nbr_compo, centering, normalization, whit
 	i += 1
 
     return np.dot(U,xRot[:,indice])
-
-
-
-
-
-
-
-
-
-
-
-
