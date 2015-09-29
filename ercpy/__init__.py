@@ -12,6 +12,8 @@ holography
     # TODO: Add description!
 eelsedx
     # TODO: Add description!
+mtools
+    # TODO: Add description!
 utils
     # TODO: Add description!
 
@@ -22,7 +24,6 @@ from .formats import *  # analysis:ignore
 from .holography import *  # analysis:ignore
 from .eelsedx import *  # analysis:ignore
 from .mtools import *  # analysis:ignore
-import utils
 import config
 from .version import version as __version__
 
