@@ -8,7 +8,7 @@
 import re
 import h5py
 
-import config
+from .. import config
 
 import logging
 
@@ -79,30 +79,38 @@ class EMD(object):
             offset = signal.axes_manager[i].offset
             scale = signal.axes_manager[i].scale
             dim = dataset.create_dataset(key, data=[offset, offset+scale])
-            dim.attrs['name'] = signal.axes_manager[i].name
+            name = signal.axes_manager[i].name
+            from traits.trait_base import _Undefined
+            if type(name) is _Undefined:
+                name = ''
+            dim.attrs['name'] = name
             units = signal.axes_manager[i].units
-            dim.attrs['units'] = '[{}]'.format('_'.join(list(units)))
+            if type(units) is _Undefined:
+                units = ''
+            else:
+                units = '[{}]'.format('_'.join(list(units)))
+            dim.attrs['units'] = units
             # TODO: What if units is not one or two characters long? More _? E.g. keV?
         # Write metadata:
-        dataset.attrs['emd_group_type'] = 1
         for key, value in signal.metadata.Signal:
             dataset.attrs[key] = value
 
     def _read_signal_from_group(self, name, group):
         self._log.debug('Calling _read_signal_from_group')
-        import hyperspy.hspy as hp
-        # Create hyperspy Signal:
+        import hyperspy.api as hp
+        # Extract essential data:
         data = group.get('data')[...]
-        signal = hp.signals.Signal(data)
+        record_by = group.attrs.get('record_by', '')
+        # Create Signal, Image or Spectrum:
+        if record_by == 'spectrum':
+            signal = hp.signals.Spectrum(data)
+        if record_by == 'image':
+            signal = hp.signals.Image(data)
+        else:
+            signal = hp.signals.Signal(data)
         # Set signal properties:
         signal.set_signal_origin = group.attrs.get('signal_origin', '')
         signal.set_signal_type = group.attrs.get('signal_type', '')
-        record_by = group.attrs.get('record_by', '')
-        # Convert to image or spectrum if necessary:
-        if record_by == 'spectrum':
-            signal.as_spectrum()
-        if record_by == 'image':
-            signal.as_image()
         # Iterate over all dimensions:
         for i in range(len(data.shape)):
             dim = group.get('dim{}'.format(i+1))
@@ -112,8 +120,8 @@ class EMD(object):
             try:
                 signal.axes_manager[i].scale = dim[1] - dim[0]  # TODO: What about longer dim?
                 signal.axes_manager[i].offset = dim[0]
-            except Exception:  # Hyperspy just uses defaults!
-                print 'Scale could not be calculated!'  # TODO: If dim is empty or non-numeric!
+            except (IndexError, TypeError) as e:  # Hyperspy uses defaults (1.0 and 0.0)!
+                self._log.warning('Could not calculate scale/offset of axis {}: {}'.format(i, e))
         # Extract metadata:
         metadata = {}
         for key, value in group.attrs.iteritems():
@@ -140,14 +148,27 @@ class EMD(object):
         Notes
         -----
         This is the preferred way to add signals to the EMD instance. Directly adding to the `data`
-        dictionary is possible but does not make sure all metadata are correct.
+        dictionary is possible but does not make sure all metadata are correct. This is called
+        in the standard constructor on all entries in the `data` dictionary!
 
         '''
         self._log.debug('Calling add_signal')
+        # TODO: Make this ULTRAFLEXIBLE, able to handle unf, dm3, images, txt, all that jazz!
+        # TODO: OR have separate add_signal_from_file for that! (which envokes this! jup, better!)
+        import hyperspy.api as hp
+        if not issubclass(type(signal), hp.signals.Signal):
+            try:
+                signal = hp.load(signal)  # See if HyperSpy can handle it!
+            except Exception as e:
+                self._log.error('Could not load signal ({})!'.format(str(e)))
         # Save title:
         signal.metadata.General.title = name
         # Save signal metadata:
+        signal.metadata.Signal['emd_group_type'] = 1
         signal.metadata.Signal.add_dictionary(metadata)
+        for key in ['name', 'units']:
+            if key not in signal.metadata.Signal.as_dictionary():
+                signal.metadata.Signal[key] = ''  # make sure at least defaults are present!
         # Save global metadata:
         signal.metadata.General.add_node('user')
         signal.metadata.General.user.add_dictionary(self.user)
@@ -255,6 +276,8 @@ class EMD(object):
         emd_file.close()
         return emd
 
+    # TODO: def export_signal(signal_name, filename):  # Wrappers for several formats!
+
     def print_info(self):
         '''Print all relevant information about the EMD instance.
 
@@ -290,6 +313,6 @@ class EMD(object):
 
 if __name__ == '__main__':
     emd = EMD.load_from_emd('C:\Users\Jan\Desktop\EMD\Si3N4_0001_multislice.emd')
-    print emd.data.values()[0].metadata
-    emd.save_to_emd('test.emd')
-    EMD.load_from_emd('test.emd').print_info()
+#    print emd.data.values()[0].metadata
+#    emd.save_to_emd('test.emd')
+#    EMD.load_from_emd('test.emd').print_info()

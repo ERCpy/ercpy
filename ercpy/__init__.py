@@ -6,7 +6,7 @@
 
 Modules
 -------
-emd
+formats
     # TODO: Add description!
 holography
     # TODO: Add description!
@@ -20,17 +20,19 @@ utils
 """
 
 
-from .emd import *  # analysis:ignore
-import holography
-import eelsedx
-import mtools
+from .formats import *  # analysis:ignore
+from .holography import *  # analysis:ignore
+from .eelsedx import *  # analysis:ignore
+from .mtools import *  # analysis:ignore
 import config
 from .version import version as __version__
 
 import logging
 _log = logging.getLogger(__name__)
-_log.info("Starting PYRAMID V{}".format(__version__))
+_log.info("Starting ERCpy V{}".format(__version__))
 del logging
 
-__all__ = ['emd', 'holography', 'eelsedx', 'mtools', 'config']
-__all__.extend(emd.__all__)
+__all__ = ['utils', 'config']
+__all__.extend(formats.__all__)
+__all__.extend(holography.__all__)
+__all__.extend(eelsedx.__all__)
