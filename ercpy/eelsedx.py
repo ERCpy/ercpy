@@ -1,6 +1,9 @@
 import ercpy.utils as ut
 import numpy as np
 import scipy.linalg as sc
+
+__all__ = ['fib', 'fib2']
+
 from scipy.sparse.linalg import svds
 
 def Nbr_compotokeep(hyperspy_signal, Prcent_to_keep):

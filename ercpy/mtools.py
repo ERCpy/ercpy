@@ -15,11 +15,15 @@ from scipy.signal import correlate2d, medfilt
 from skimage.feature import register_translation
 from scipy.misc import imresize
 
+
+__all__ = ['fft']
+
+
 def fft(img):
     '''
-    
+
     Calculate and plot FFT
-    
+
     Parameters
     ----------
     img : array_like
@@ -31,8 +35,8 @@ def fft(img):
         Complex array of calculated FFT
 
     '''
-    
-    fft_data = fftshift(fft2(img))    
+
+    fft_data = fftshift(fft2(img))
     plt.imshow(np.log(np.absolute(fft_data)), cmap=cm.binary_r)
     
     

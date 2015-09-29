@@ -1,0 +1,189 @@
+<<< PEP8 LOGFILE >>>
+RUN: 2015-09-23 16:45:41
+IGNORED RULES: E125, E226, E228
+MAX LINE LENGTH: 99
+
+ERRORS AND WARNINGS:
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\config.py:18:5: E123 closing bracket does not match indentation of opening bracket's line
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\eelsedx.py:7:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\eelsedx.py:7:13: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\emd.py:116:100: E501 line too long (101 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:11:32: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:11:41: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:26:100: E501 line too long (116 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:40:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:52:56: W291 trailing whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:53:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:68:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:74:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:75:8: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:75:12: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:79:68: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:80:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:86:14: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:86:58: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:86:59: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:86:100: E501 line too long (115 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:88:11: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:88:62: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:88:63: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:89:15: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:89:60: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:89:61: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:89:100: E501 line too long (117 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:90:13: E113 unexpected indentation
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:91:11: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:91:62: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:91:63: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:92:15: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:92:60: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:92:61: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:92:100: E501 line too long (117 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:94:16: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:94:74: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:94:100: E501 line too long (101 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:95:16: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:95:39: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:95:42: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:95:100: E501 line too long (105 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:97:64: W291 trailing whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:99:16: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:100:16: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:100:39: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:100:42: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:108:11: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:108:62: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:108:63: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:109:72: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:109:73: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:109:100: E501 line too long (129 > 99 characters)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:116:42: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:116:50: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:116:57: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:116:60: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:116:64: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:116:65: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:117:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:118:39: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:118:47: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:118:54: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:118:57: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:118:61: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:118:62: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:119:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:123:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:128:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:130:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:131:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:132:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:133:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:134:1: E303 too many blank lines (4)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:134:31: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:134:39: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:134:46: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:134:60: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:136:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:138:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:140:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:142:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:144:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:146:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:148:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:163:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:172:52: W291 trailing whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:173:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:176:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:178:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:184:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:186:26: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:187:22: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:188:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:189:26: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:190:22: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:191:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:192:8: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:193:38: E703 statement ends with a semicolon
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:196:5: E303 too many blank lines (2)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:196:41: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:200:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:201:11: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:202:9: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:203:11: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:204:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:208:11: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:208:40: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:210:29: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:210:37: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:211:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:213:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:215:38: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:215:56: E703 statement ends with a semicolon
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:215:57: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:215:58: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:220:5: E265 block comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:230:9: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:230:22: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:230:25: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:230:28: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:231:39: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:231:42: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:231:49: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:231:52: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:232:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:233:11: E225 missing whitespace around operator
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:233:15: E703 statement ends with a semicolon
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:233:20: E262 inline comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:234:43: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:234:53: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:235:35: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:236:39: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:237:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py:240:15: W292 no newline at end of file
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\mtools.py:11:35: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\mtools.py:15:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\mtools.py:17:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\mtools.py:19:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\mtools.py:31:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\mtools.py:32:35: W291 trailing whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\mtools.py:33:64: W292 no newline at end of file
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:6:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:12:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:12:13: E261 at least two spaces before inline comment
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:20:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:25:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:27:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:31:33: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:31:42: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:61:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:64:27: E701 multiple statements on one line (colon)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:65:20: E701 multiple statements on one line (colon)
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:74:1: E265 block comment should start with '# '
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:91:31: W291 trailing whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:120:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:121:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:130:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:133:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:139:30: E231 missing whitespace after ','
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:140:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:141:1: E302 expected 2 blank lines, found 1
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:144:1: W293 blank line contains whitespace
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:150:30: E202 whitespace before ')'
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\utils.py:150:32: W292 no newline at end of file
+---->   165 PEP8 violations detected!
+
+TODOS:
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\emd.py: What about longer dim?
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\emd.py: What if units is not one or two characters long? More _? E.g. keV?
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\emd.py: What about longer dim?
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\emd.py: function to generate subsets of datasets! List as input!
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py: Parsing of the input has to be redone
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py: Add disabling of Fresnel filtering
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py: Add smoothing of Fresnel filter
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\holography.py: Add smoothing options?
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\semper.py: ???
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\__init__.py: Global description (one line)!
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\__init__.py: Add description!
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\__init__.py: Add description!
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\__init__.py: Add description!
+C:\Users\Jan\Home\PhD Thesis\Spyder\ERCpy\ercpy\__init__.py: Add description!
+---->   14 TODOs found!

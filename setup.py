@@ -85,7 +85,7 @@ setup(name=DISTNAME,
       version=VERSION,
       packages=find_packages(exclude=['tests']),
       include_dirs=[numpy.get_include()],
-      requires=['numpy', 'matplotlib', 'mayavi'],
+      requires=['numpy'],  # TODO: Add necessary packages!
       scripts=get_files('scripts'),
       test_suite='nose.collector'
       )
