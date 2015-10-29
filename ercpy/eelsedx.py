@@ -1,6 +1,6 @@
 import ercpy.utils as ut
 import numpy as np
-import scipy.linalg as sc
+import scipy as sc
 
 __all__ = ['Nbr_compotokeep', 'VCA_decomposition']
 
@@ -98,8 +98,9 @@ def VCA_decomposition(hyperspy_signal, nbr_compo, centering, normalization, whit
     while (i<nbr_compo):
 	w = np.random.randn(nbr_compo,1)
 	w= abs(w)
-	f = w-np.dot(np.dot(A,np.linalg.pinv(A)),w)
-	f = f / sc.norm(f)
+	#f = w-np.dot(np.dot(A,np.linalg.pinv(A)),w) #changed MD 23 oct 2015
+	f = w-np.dot(np.dot(A,sc.linalg.pinv(A)),w)
+	f = f / sc.linalg.norm(f)
 	v = np.dot(np.transpose(f),xRot)
 	indice[i] =  np.argmax(abs(v))
 	A[:,i] = xRot[:,indice[i]]
